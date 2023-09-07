@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login.js";
+import Home from "./pages/Home.js";
+import Task from "./pages/Task";
+import TaskCreate from "./pages/TaskCreate.js";
+import { useSelector } from "react-redux";
 function App() {
+  const {user}=useSelector((state)=>state.user)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={!user ? <Login /> : <Navigate to="/home" />} />
+        <Route path="/home" element={user ? <Home /> : <Navigate to="/" />} />
+        <Route path="/task/:id" element={user ? <Task /> : <Navigate to="/" />} />
+        <Route path="/task/create" element={user ? <TaskCreate /> : <Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 }
 
